@@ -30,27 +30,17 @@ The reverse diffusion process can be reframed as a multi-step **Markov Decision 
 
 - **Transition**:  
   Deterministic transition to the next state:  
-  $$
-  P(s_{t+1} \mid s_t, a_t) \equiv (\delta_c,\, \delta_{t-1},\, \delta_{a_t})
-  $$
+  $$P(s_{t+1} \mid s_t, a_t) \equiv (\delta_c,\, \delta_{t-1},\, \delta_{a_t})$$
   where $\delta_c$ denotes copying the context $c$, $\delta_{t-1}$ decrements the timestep, and $\delta_{a_t}$ updates the state with the new latent $a_t$.
 
 - **Reward**:  
   Sparse reward given only at the end of the trajectory:  
-  $$
-  R(s_t, a_t) =
-  \begin{cases}
-    r(x_0, c), & t = 0 \\\\
-    0, & t > 0
-  \end{cases}
-  $$
+  $$R(s_t, a_t) = \begin{cases} r(x_0, c), & t = 0 \\ 0, & t > 0 \end{cases}$$
   where $r(x_0, c)$ is a (possibly non-differentiable) black-box score computed on the final generated sample $x_0$.
 
 - **Initial State**:  
   The process starts from  
-  $$
-  P(s_0) = (c, T, \mathcal{N}(0, I))
-  $$
+  $$P(s_0) = (c, T, \mathcal{N}(0, I))$$
   i.e., the fully noised image $x_T \sim \mathcal{N}(0, I)$.
 
 The reverse diffusion trajectory is denoted as $\tau = (x_T, x_{T-1}, \ldots, x_0)$.
@@ -92,11 +82,7 @@ When sampling unconditionally, the majority of generated images—approximately 
 
 ## Scheduler
 
-We employ a **Denoising Diffusion Implicit Model (DDIM) scheduler** for the reverse sampling process during training and inference. The number of inference steps is fixed at
-
-$$
-T = 50
-$$
+We employ a **Denoising Diffusion Implicit Model (DDIM) scheduler** for the reverse sampling process during training and inference. The number of inference steps is fixed at $T = 50$.
 
 - The variance schedule is linear and remains unchanged during fine-tuning.
 
