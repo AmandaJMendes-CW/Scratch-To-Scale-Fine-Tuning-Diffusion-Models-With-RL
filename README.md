@@ -240,7 +240,7 @@ The progression shows a clear transformation:
 This visual evolution demonstrates the effectiveness of reward-aligned fine-tuning in steering diffusion model behavior toward desired objectives while maintaining generation fidelity.
 
 <p align="center">
-  <img src="assets/samples.gif" alt="Sample Evolution During Fine-Tuning" width="600"/>
+  <img src="assets/samples-looped.gif" alt="Sample Evolution During Fine-Tuning" width="600"/>
 </p>
 
 *Figure: Evolution of generated samples from a fixed random seed across training steps. The GIF illustrates the model's progression from the pretrained bias toward female-presenting individuals to a balanced gender distribution as fine-tuning proceeds. Visual quality is maintained or improved throughout.*
