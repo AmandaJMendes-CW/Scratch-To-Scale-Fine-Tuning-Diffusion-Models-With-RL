@@ -227,7 +227,7 @@ def evaluate_model(
 if __name__ == "__main__":
     # Parse command line arguments
     parser = argparse.ArgumentParser(description='Fine-tune diffusion model with RL')
-    parser.add_argument('--per_gpu_batch_size', type=int, default=5, help='Batch size per GPU')
+    parser.add_argument('--local_batch_size', type=int, default=5, help='Batch size per GPU')
     parser.add_argument('--inference_timesteps', type=int, default=50, help='Number of inference timesteps')
     parser.add_argument('--full_epochs', type=int, default=10, help='Total number of epochs')
     parser.add_argument('--epochs_per_sampling', type=int, default=2, help='Number of training epochs per sampling')
@@ -250,7 +250,7 @@ if __name__ == "__main__":
     accelerator.init_trackers(project_name="diffusion-finetune", config=args)
 
     # Define number of samples and batches per GPU
-    num_batches_per_gpu = math.ceil(args.samples_per_epoch / (args.per_gpu_batch_size * accelerator.num_processes))
+    num_batches_per_gpu = math.ceil(args.samples_per_epoch / (args.local_batch_size * accelerator.num_processes))
 
     # Load the model and scheduler
     scheduler = CustomDDIMScheduler.from_pretrained("google/ddpm-celebahq-256", use_safetensors = True)
@@ -276,7 +276,7 @@ if __name__ == "__main__":
         model=pretrained_model.module,
         scheduler=scheduler,
         num_samples=args.eval_samples,
-        batch_size=args.per_gpu_batch_size,
+        batch_size=args.local_batch_size,
         device=device,
         accelerator=accelerator
     )
@@ -293,8 +293,8 @@ if __name__ == "__main__":
         }
 
         # Sampling loop
-        for _ in tqdm(range(num_batches_per_gpu), desc=f"Generating batches of size {args.per_gpu_batch_size}", disable=not accelerator.is_main_process):
-            latents, next_latents, log_probs, timesteps = generate_batch(pretrained_model.module, scheduler, args.per_gpu_batch_size, device)
+        for _ in tqdm(range(num_batches_per_gpu), desc=f"Generating batches of size {args.local_batch_size}", disable=not accelerator.is_main_process):
+            latents, next_latents, log_probs, timesteps = generate_batch(pretrained_model.module, scheduler, args.local_batch_size, device)
             
             # Get the rewards in the current GPU
             rewards, scores = reward_function(next_latents[:, -1])
@@ -393,7 +393,7 @@ if __name__ == "__main__":
                                     model=pretrained_model.module,
                                     scheduler=scheduler,
                                     num_samples=args.eval_samples,
-                                    batch_size=args.per_gpu_batch_size,
+                                    batch_size=args.local_batch_size,
                                     device=device,
                                     accelerator=accelerator
                                 )

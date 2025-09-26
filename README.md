@@ -125,11 +125,11 @@ The parallelization strategy operates at multiple levels:
 #### 1. **Batch Distribution Across GPUs**
 ```python
 # Dynamic batch allocation per GPU
-num_batches_per_gpu = math.ceil(samples_per_epoch / (per_gpu_batch_size * num_processes))
+num_batches_per_gpu = math.ceil(samples_per_epoch / (local_batch_size * num_processes))
 ```
 - Input batches are automatically distributed across all available GPUs
 - Each GPU processes its subset independently, maximizing hardware utilization
-- Supports flexible batch sizing with `--per_gpu_batch_size` parameter
+- Supports flexible batch sizing with `--local_batch_size` parameter
 
 #### 2. **Phase 1: Parallel Trajectory Generation** 
 At the start of each epoch, all GPUs work in parallel to:
@@ -176,7 +176,7 @@ The parallelization is essential because policy gradient fine-tuning is inherent
 ```bash
 # Multi-GPU training with 4 GPUs
 accelerate launch --num_processes 4 scripts/main.py \
-    --per_gpu_batch_size 5 \
+    --local_batch_size 5 \
     --samples_per_epoch 200 \
     --learning_rate 1e-5 \
     --num_epochs 10
