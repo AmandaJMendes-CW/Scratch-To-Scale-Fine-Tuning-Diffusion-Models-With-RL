@@ -1,5 +1,5 @@
-from .custom_ddim_scheduler import CustomDDIMScheduler
-from .rewards import reward_function
+from custom_ddim_scheduler import CustomDDIMScheduler
+from rewards import reward_function
 
 from accelerate.logging import get_logger
 from accelerate import Accelerator
@@ -242,7 +242,7 @@ if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO) 
 
     # Initialize the accelerator
-    accelerator = Accelerator(gradient_accumulation_steps=args.inference_timesteps, log_with="wandb")
+    accelerator = Accelerator(gradient_accumulation_steps=args.inference_timesteps-1, log_with="wandb")
     device = accelerator.device
     logger.info(f"Using device: {device}")
 
@@ -346,7 +346,8 @@ if __name__ == "__main__":
                 advantages = (rewards - global_mean) / global_std
 
                 # Accumulate gradients for each timestep of the current batch
-                for t in range(args.inference_timesteps):
+                # The last step of the denoising is deterministic, so we skip it in training
+                for t in range(args.inference_timesteps - 1):
                     with accelerator.accumulate(pretrained_model):
                         # Get new likelihoods
                         lat_gpu = latents[:, t].to(device, non_blocking=True)
