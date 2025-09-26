@@ -76,9 +76,7 @@ When sampling unconditionally, the majority of generated images—approximately 
 
 ## Scheduler
 
-We employ a **Denoising Diffusion Implicit Model (DDIM) scheduler** for the reverse sampling process during training and inference. The number of inference steps is fixed at $T = 50$.
-
-- The variance schedule is linear and remains unchanged during fine-tuning.
+We employ a **Denoising Diffusion Implicit Model (DDIM) scheduler** for the reverse sampling process during training and inference. The number of inference steps is fixed at $T = 50$. The variance schedule is linear and remains unchanged during fine-tuning.
 
 ---
 
