@@ -51,15 +51,7 @@ The reverse diffusion trajectory is denoted as $\tau = (x_T, x_{T-1}, \ldots, x_
 
 ## Policy Gradient (REINFORCE)
 
-Maximizing the expected reward in this MDP can be achieved using the REINFORCE estimator. The gradient of the expected return is:
-
-$$
-\nabla_\theta J(\theta)
-= \mathbb{E}_{c \sim p(c),\, \tau \sim p_\theta(\tau \mid c)}
-\left[\, r(x_0, c)\, \sum_{t=1}^{T} \nabla_\theta \log p_\theta(x_{t-1} \mid x_t, c) \,\right]
-$$
-
-This estimator is unbiased and can be approximated via Monte Carlo sampling. For a batch of $N$ trajectories $\{\tau^{(i)}\}_{i=1}^N$, each conditioned on context $c^{(i)} \sim p(c)$, the gradient is estimated as:
+Maximizing the expected reward in this MDP can be accomplished using the REINFORCE estimator. Employing Monte Carlo sampling, for a batch of $N$ trajectories $\{\tau^{(i)}\}_{i=1}^N$, each conditioned on context $c^{(i)} \sim p(c)$, the gradient is estimated as:
 
 $$
 \nabla_\theta J(\theta) \approx
