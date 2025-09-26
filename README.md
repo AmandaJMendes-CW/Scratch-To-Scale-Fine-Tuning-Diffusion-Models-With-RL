@@ -184,8 +184,8 @@ The parallelization is essential because policy gradient fine-tuning is inherent
 
 **Training (Policy Gradient Fine-tuning):**
 ```bash
-# Multi-GPU training with automatic device detection
-accelerate launch scripts/main.py \
+# Multi-GPU training with 4 GPUs
+accelerate launch --num_processes 4 scripts/main.py \
     --per_gpu_batch_size 5 \
     --samples_per_epoch 200 \
     --learning_rate 1e-5 \
@@ -194,15 +194,15 @@ accelerate launch scripts/main.py \
 
 **Inference (Parallel Image Generation):**
 ```bash
-# Multi-GPU image generation - parallelism speeds up batch processing
-accelerate launch utils/generate_images.py \
-    --model_path ./models/finetuned_model \
+# Multi-GPU image generation with 4 GPUs - parallelism speeds up batch processing
+accelerate launch --num_processes 4 utils/generate_images.py \
+    --model_dir final_model_20250615_135803 \
     --batch_size 8 \
     --num_images 100 \
     --num_inference_steps 50
 ```
 
-Both scripts automatically detect and utilize all available GPUs through Accelerate's distributed framework, with parallelism applied to trajectory generation, reward computation, and gradient updates in training, and to batch processing and image generation in inference.
+Both scripts utilize the specified number of GPUs through Accelerate's distributed framework, with parallelism applied to trajectory generation, reward computation, and gradient updates in training, and to batch processing and image generation in inference.
 
 ---
 
