@@ -412,10 +412,14 @@ if __name__ == "__main__":
         model_dir = f"./final_model_{timestamp}"
         model_to_save.save_pretrained(model_dir)
         
+        # Save the scheduler
+        scheduler.save_pretrained(f"{model_dir}/scheduler")
+        
         # Save the arguments as JSON
         args_dict = vars(args)
         with open(f"{model_dir}/training_args.json", "w") as f:
             json.dump(args_dict, f, indent=2)
         
         logger.info(f"Saved model to {model_dir}")
+        logger.info(f"Saved scheduler to {model_dir}/scheduler")
         logger.info(f"Saved training arguments to {model_dir}/training_args.json")
