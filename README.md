@@ -35,7 +35,9 @@ The reverse diffusion process can be reframed as a multi-step **Markov Decision 
 
 - **Reward**:  
   Sparse reward given only at the end of the trajectory:  
+  
   $$R(s_t, a_t) = \begin{cases} r(x_0, c), & t = 0 \\ 0, & t > 0 \end{cases}$$
+  
   where $r(x_0, c)$ is a (possibly non-differentiable) black-box score computed on the final generated sample $x_0$.
 
 - **Initial State**:  
