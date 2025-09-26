@@ -178,13 +178,6 @@ for t in range(inference_timesteps):
 
 ### Scalability and Performance Impact
 
-This distributed approach provides several key advantages:
-
-- **~4x speedup** on 4-GPU setup compared to single-GPU training
-- **Linear scaling** with number of available GPUs
-- **Memory efficiency** enabling larger batch sizes and longer sequences
-- **Fault tolerance** with automatic process coordination
-
 The parallelization is essential because policy gradient fine-tuning is inherently compute-intensive: each training step requires generating complete diffusion trajectories, evaluating multiple reward functions, and backpropagating through the entire reverse process. Without multi-GPU support, training would be prohibitively slow for practical applications.
 
 ### Running Multi-GPU Scripts
